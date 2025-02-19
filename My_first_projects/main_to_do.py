@@ -1,6 +1,6 @@
 store = []
 
-def choice_1():
+def add_task():
     global store
     new_task = input("New task:")
     store.append(new_task)
@@ -8,19 +8,19 @@ def choice_1():
     action()
 
 
-def choice_2():
+def print_store():
     print(store)
     action()
 
 
-def choice_3():
+def complete_task():
     print("Choose task to complete ↓")
     n = 0
     for task in store:
         print(f" {n+1} - {task}")
         n+=1
     complete_choice = int(input())
-    if 0 <= complete_choice < len(store):
+    if 0 <= complete_choice < len(store) + 1:
         store[complete_choice - 1] = store[complete_choice - 1] + " ✓"
         print(f"Congrats, your task was successfully completed!")
     else:
@@ -28,14 +28,14 @@ def choice_3():
     action()
 
 
-def choice_4():
+def delete_task():
     print("Choose task to delete ↓")
     n = 0
     for task in store:
         print(f" {n+1} - {task}")
         n += 1
     delete_choice = int(input())
-    if 0 <= delete_choice < len(store):
+    if 0 <= delete_choice < len(store) + 1:
         store.pop(delete_choice - 1)
         print(f"Your task was deleted!")
         action()
@@ -43,7 +43,7 @@ def choice_4():
         print("Invalid value, please try again")
 
 
-def choice_5():
+def save_exit():
     exit()
 
 def action():
