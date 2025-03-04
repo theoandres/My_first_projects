@@ -14,20 +14,25 @@ class Task:
         self.completed = False
 
 
-
     def complete_task(self):
         self.completed = True
 
+
 class TaskManager:
-    def __init__(self):
+    def __init__(self, root):
         self.task_memory = []
+        self.root = root
+        self.root.iconbitmap("todo_icon.ico")
+        self.root.title('To-Do App by Theo')
 
 
     def add_task(self):
-        add_task_window = Toplevel()
+        add_task_window = Toplevel(self.root)
         add_task_window.geometry('400x350')
+        add_task_window.iconbitmap('todo_icon.ico')
 
         # Name part
+
         Label(add_task_window, text='Task Name:').pack(anchor="w", padx=10)
         name_entry = Entry(add_task_window, width=40, font=("Arial", 10))
         name_entry.pack(padx=10, pady=5, fill="x")
@@ -46,7 +51,7 @@ class TaskManager:
 
 
         # Funkcion for saving tasks
-        def save_new_task(self):
+        def save_new_task():
             name = name_entry.get()
             description = desc_text.get("1.0", "end-1c")
             priority_text = priority_entry.get()
@@ -86,6 +91,7 @@ class TaskManager:
         self.task_window = Toplevel()
         self.task_treeview = Treeview(self.task_window, columns=('Name', 'Description', 'Status', 'Priority'),
                                       show='headings')
+        self.task_window.iconbitmap("todo_icon.ico")
         self.task_treeview.heading("Priority", text="Priority")
         self.task_treeview.heading("Name", text="Task Name")
         self.task_treeview.heading("Description", text="Description")
@@ -107,6 +113,7 @@ class TaskManager:
                 self.task_treeview.insert('', END, values=(task.name, task.description, Status, task.priority))
         else:
             self.task_treeview.insert("", "end", values=("", "No tasks available", "", ""))
+
 
     def complete_task(self):
         self.tasks_GUI()
@@ -138,7 +145,7 @@ class TaskManager:
     def show_tasks(self):
         show_task_window = Toplevel()
         show_task_window.geometry('900x300')
-        show_task_window.title('Tasks')
+        show_task_window.iconbitmap("todo_icon.ico")
         task_treeview = Treeview(show_task_window, columns=('Name','Description','Status', 'Priority'), show='headings')
         task_treeview.heading("Priority", text = "Priority")
         task_treeview.heading("Name", text = "Task Name")
@@ -147,7 +154,7 @@ class TaskManager:
         verscrlbar = Scrollbar(show_task_window,
                                    orient="vertical",
                                    command=task_treeview.yview)
-        verscrlbar.pack(side = 'right', fill = 'x')
+        verscrlbar.pack(side = 'right', fill = 'y')
         task_treeview.pack()
         task_treeview.configure(xscrollcommand=verscrlbar.set)
 
@@ -187,7 +194,7 @@ class TaskManager:
                                command=lambda: remove_item(self))
 
 
-        def remove_item (self):
+        def remove_item ():
             selected_item = self.task_treeview.selection()
             iid = selected_item[0]
             task_values = self.task_treeview.item(iid, "values")
@@ -205,15 +212,15 @@ class TaskManager:
 
 
     def main_menu(self):
-        root = Tk()
-        root.geometry('500x300')
-        root.title('To-Do App by Theo')
-        main_menu_text = Label(root, text = 'Choose of the following options:')
-        add_task = Button(root, text="Add task", width=30, command=self.add_task)
-        show_task = Button(root, text="Show tasks", width=30, command=self.show_tasks)
-        complete_task = Button(root, text="Mark task as completed", width=30, command=self.complete_task)
-        remove_task = Button(root, text="Remove task", width=30, command=self.remove_task)
-        save_exit = Button(root, text="Save and exit", width=30, command=self.save_and_exit)
+        menu_window = Toplevel(self.root)
+        menu_window.geometry('500x300')
+        menu_window.iconbitmap("todo_icon.ico")
+        main_menu_text = Label(menu_window, text = 'Choose of the following options:')
+        add_task = Button(menu_window, text="Add task", width=30, command=self.add_task)
+        show_task = Button(menu_window, text="Show tasks", width=30, command=self.show_tasks)
+        complete_task = Button(menu_window, text="Mark task as completed", width=30, command=self.complete_task)
+        remove_task = Button(menu_window, text="Remove task", width=30, command=self.remove_task)
+        save_exit = Button(menu_window, text="Save and exit", width=30, command=self.save_and_exit)
         main_menu_text.pack(pady = 20)
         add_task.pack(pady = 5)
         show_task.pack(pady = 5)
@@ -224,7 +231,9 @@ class TaskManager:
         tkinter.mainloop()
 
 if __name__ == "__main__":
-    task_manager = TaskManager()
+    root = Tk()  # Vytvoření hlavního okna mimo třídu
+    root.withdraw()  # Skryje hlavní okno (root) – nebude viditelné, jen existuje
+    task_manager = TaskManager(root)
     file = Path('todolistsave.xlsx')
     if file.exists():
         wb = load_workbook(filename='todolistsave.xlsx')
