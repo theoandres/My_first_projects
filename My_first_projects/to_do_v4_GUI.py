@@ -51,7 +51,7 @@ class TaskManager:
 
 
         # Funkcion for saving tasks
-        def save_new_task():
+        def save_new_task(self):
             name = name_entry.get()
             description = desc_text.get("1.0", "end-1c")
             priority_text = priority_entry.get()
@@ -194,7 +194,7 @@ class TaskManager:
                                command=lambda: remove_item(self))
 
 
-        def remove_item ():
+        def remove_item (self):
             selected_item = self.task_treeview.selection()
             iid = selected_item[0]
             task_values = self.task_treeview.item(iid, "values")
@@ -231,8 +231,8 @@ class TaskManager:
         tkinter.mainloop()
 
 if __name__ == "__main__":
-    root = Tk()  # Vytvoření hlavního okna mimo třídu
-    root.withdraw()  # Skryje hlavní okno (root) – nebude viditelné, jen existuje
+    root = Tk()
+    root.withdraw()
     task_manager = TaskManager(root)
     file = Path('todolistsave.xlsx')
     if file.exists():
